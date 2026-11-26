@@ -4,6 +4,9 @@ Loads settings from .env file or environment variables.
 """
 import os
 from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+
 try:
     from dotenv import load_dotenv
     load_dotenv(BASE_DIR / ".env")
