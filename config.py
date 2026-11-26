@@ -4,10 +4,11 @@ Loads settings from .env file or environment variables.
 """
 import os
 from pathlib import Path
-from dotenv import load_dotenv
-
-BASE_DIR = Path(__file__).resolve().parent
-load_dotenv(BASE_DIR / ".env")
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / ".env")
+except Exception:
+    pass
 
 
 def _get_setting(key: str, default: str = "") -> str:
@@ -24,6 +25,7 @@ def _get_setting(key: str, default: str = "") -> str:
 
 
 class Settings:
+    BASE_DIR: Path = BASE_DIR
     DB_HOST: str = _get_setting("DB_HOST", "localhost")
     DB_PORT: int = int(_get_setting("DB_PORT", "3306"))
     DB_USER: str = _get_setting("DB_USER", "root")

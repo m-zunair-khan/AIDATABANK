@@ -35,8 +35,10 @@ def _init_mysql():
             "database": settings.DB_NAME,
             "connection_timeout": 5,
         }
-        if settings.DB_SSL_CA and os.path.exists(settings.DB_SSL_CA):
-            db_kwargs["ssl_ca"] = settings.DB_SSL_CA
+        ssl_ca = settings.DB_SSL_CA or "ca.pem"
+        ssl_ca_path = os.path.join(str(settings.BASE_DIR), ssl_ca) if not os.path.isabs(ssl_ca) else ssl_ca
+        if os.path.exists(ssl_ca_path):
+            db_kwargs["ssl_ca"] = ssl_ca_path
 
         _MYSQL_POOL = pooling.MySQLConnectionPool(
             pool_name="ai_registry_pool",
